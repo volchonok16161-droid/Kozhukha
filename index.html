@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#0a5eb0">
     <meta name="format-detection" content="telephone=no">
-    <title>Чек-лист — Кожуха</title>
+    <title>Чек-лист — Кожуха (с уведомлениями)</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
     <script>
@@ -36,6 +36,8 @@
             --ok: #1f9d55;
             --bad: #d1453b;
             --info: #2f7dd6;
+            --gold: #d4a017;
+            --gold-light: #f9f0d0;
             --mono: 'JetBrains Mono', 'Consolas', monospace;
             --sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
@@ -51,6 +53,8 @@
             --ok: #1f9d55;
             --bad: #d1453b;
             --info: #1a86d9;
+            --gold: #d4a017;
+            --gold-light: #f9f0d0;
         }
         html[data-theme="tmh"] .topbar {
             background: linear-gradient(180deg, #0a5eb0, #0c4a8c 92%);
@@ -256,6 +260,8 @@
             --ok: #3fae6a;
             --bad: #d9553f;
             --info: #3f8ce0;
+            --gold: #d4a017;
+            --gold-light: #f9f0d0;
         }
         html[data-theme="dark"] .topbar {
             background: linear-gradient(180deg, #0d1218, #141b23 90%);
@@ -1184,6 +1190,99 @@
             opacity: 1;
             transform: translateX(-50%) translateY(-6px);
         }
+
+        /* ===== Стили уведомлений ===== */
+        .nav-btn {
+            background: var(--gold);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(212, 160, 23, 0.3);
+            margin-bottom: 16px;
+            border: none;
+        }
+        .nav-btn:hover {
+            background: #b88a14;
+        }
+        .nav-btn .badge {
+            background: #e74c3c;
+            border-radius: 20px;
+            padding: 0 10px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .notice-list {
+            background: var(--panel);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            padding: 6px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            display: none;
+        }
+        .notice-list.show {
+            display: block;
+        }
+        .notice-list .item {
+            padding: 10px 18px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        .notice-list .item:hover {
+            background: var(--panel2);
+        }
+        .notice-list .item:last-child {
+            border-bottom: none;
+        }
+        .notice-list .item .highlight {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .notice-list .empty {
+            color: var(--ink-dim);
+            text-align: center;
+            padding: 18px;
+            font-size: 14px;
+        }
+        .notice-badge {
+            display: inline-block;
+            background: var(--gold-light);
+            color: #8a6d0b;
+            border-left: 4px solid var(--gold);
+            padding: 4px 14px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        .notice-badge:hover {
+            background: #f5e6b0;
+        }
+        .inst.notice-needed {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold), 0 4px 12px rgba(212, 160, 23, 0.2);
+            background: #fefcf5;
+        }
+        html[data-theme="dark"] .inst.notice-needed {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold), 0 4px 12px rgba(212, 160, 23, 0.2);
+            background: #2a2418;
+        }
+
         @media (max-width:640px) {
             .frow {
                 grid-template-columns: 1fr;
@@ -1277,6 +1376,17 @@
             }
             .photo-modal {
                 max-width: 95vw;
+            }
+            .notice-list .item {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+            .nav-btn {
+                font-size: 13px;
+                padding: 6px 16px;
+            }
+            .nav-btn .badge {
+                font-size: 13px;
             }
         }
         @media (max-width:380px) {
@@ -1482,7 +1592,7 @@
                 <div class="nevz-logo"><span class="nevz">НЭВЗ</span><span class="nevz-sub">новочеркасский<br>электровозостроительный<br>завод</span></div>
             </div>
             <span class="tag" id="locomotiveTypeTag">—</span>
-            <div class="title-block"><h1>Чек-лист проверки КМБ при выполнении ТО-2, ТР-50, ТР-250, ТР-500</h1><small>Проверка кожухов (с фотофиксацией)</small></div>
+            <div class="title-block"><h1>Чек-лист проверки КМБ при выполнении ТО-2, ТР-50, ТР-250, ТР-500</h1><small>Проверка кожухов (с фотофиксацией и уведомлениями)</small></div>
         </div>
         <div class="theme-switch" id="themeSwitch">
             <button type="button" data-theme-value="tmh">ТМХ</button>
@@ -1511,6 +1621,20 @@
         <div class="card"><div id="sectionsSelection" style="margin-top:0;"></div></div>
         <div class="section-title">Выбор чек‑листа</div>
         <div class="card picker-wrap"><div class="picker" id="picker"></div></div>
+
+        <!-- ===== КНОПКА-НАВИГАТОР УВЕДОМЛЕНИЙ ===== -->
+        <div style="margin-top: 20px;">
+            <button class="nav-btn" id="toggleNavBtn">
+                🔍 Показать позиции, требующие уведомления
+                <span class="badge" id="noticeCount">0</span>
+            </button>
+        </div>
+
+        <!-- ===== СПИСОК ПОЗИЦИЙ, ТРЕБУЮЩИХ УВЕДОМЛЕНИЯ ===== -->
+        <div class="notice-list" id="noticeList">
+            <div class="empty" id="emptyMsg">Нет позиций, требующих уведомления</div>
+        </div>
+
         <div id="equipRoot"></div>
     </div>
 
@@ -3611,10 +3735,10 @@
             "ТЧЭ-10 Карасук": ["СЛД-9 КАРАСУК", "АЛТАЙСКАЯ", "АРТЫШТА", "ИРТЫШСКОЕ"],
             "ТЧЭ-11 Тимашевская": ["СЛД-10 ТИМАШЕВСК-КАВ", "СЛД-24 САЛЬСК-ГРУЗОВОЕ", "СЛД-6 ПЕТРОВВАЛЬСКОЕ"],
             "ТЧЭ-7 Петров Вал": ["СЛД-10 ТИМАШЕВСК-КАВ", "СЛД-24 САЛЬСК-ГРУЗОВОЕ", "СЛД-6 ПЕТРОВВАЛЬСКОЕ"],
-            "ТЧЭ-5 Кандалакша": ["СЛД-27 КАНДАЛАКША"],
+            "ТЧЭ-5 Кандалакша": ["СЛД-27 КАНДАЛАКША", "СЛД-34 Красноуфимск-Уральский"],
             "ТЧЭ-5 Карталы": ["СЛД-25 АРКАИМ"],
             "ТЧЭ-14 Сальск": ["СЛД-10 ТИМАШЕВСК-КАВ", "СЛД-24 САЛЬСК-ГРУЗОВОЕ", "СЛД-6 ПЕТРОВВАЛЬСКОЕ"],
-            "ТЧЭ-9 Лянгасово": ["СЛД-27 КАНДАЛАКША", "СЛД-30 ЛЯНГАСОВО-ЗАП"],
+            "ТЧЭ-9 Лянгасово": ["СЛД-27 КАНДАЛАКША", "СЛД-30 ЛЯНГАСОВО-ЗАП", "СЛД-34 Красноуфимск-Уральский"],
             "ТЧЭ-3 Чита": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
@@ -3623,62 +3747,62 @@
             "ТЧЭ-7 Абакан": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-1 Боготол": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-8 Смоляниново": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-2 Хабаровск-2": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-2 Красноярск": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-11 Белогорск": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-9 Вихоревка": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-7 Улан-Удэ": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-5 Иркутск": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-3 Иланская": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-12 С-Байкальск": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ],
             "ТЧЭ-2 Нижнеудинск": ["СЛД-32 ДАЛЬНЕВОСТОЧНОЕ", "СЛД-21 МАГДАГАЧИ", "СЛД-19 РАЗДОЛЬНОЕ", "СЛД-17 ЧИТА",
                 "СЛД-61 КАРЫМСКАЯ", "СЛД-24 ТАЙШЕТ", "СЛД-25 СЕВЕРОБАЙКАЛЬСК", "СЛД-22 НИЖНЕУДИНСКОЕ",
                 "СЛД-9 КАНСК-ИЛАНСКИЙ", "СЛД-10 АБАКАН", "СЛД-11 БОГОТОЛ-СИБ", "МЕЖДУРЕЧЕНСК", "МАРИИНСК",
-                "ИРКУТСК"
+                "ИРКУТСК", "СЛД-38 Приморское"
             ]
         };
 
@@ -3733,7 +3857,7 @@
         const LOCOMOTIVE_TYPES = Object.keys(LOCOMOTIVE_DATA);
 
         // ========================================================================
-        // ДАННЫЕ ДЛЯ КОЖУХОВ (только этот узел)
+        // ДАННЫЕ ДЛЯ КОЖУХОВ
         // ========================================================================
 
         const HOUSINGS = [];
@@ -3781,7 +3905,7 @@
         // ========================================================================
         // СОСТОЯНИЕ / ХРАНЕНИЕ
         // ========================================================================
-        const LS_KEY = 'checklist_housings_v2';
+        const LS_KEY = 'checklist_housings_v3';
         let STATE = {
             general: { type: '', number: '', date: '', depot: '', place: '', mileage: '' },
             values: {},
@@ -3848,7 +3972,6 @@
             if (!type || type === '') return;
             sections = getSections(type).map(s => s.label);
 
-            // ---- КОЖУХА (исправленная логика, с фото) ----
             EQUIPMENT.push({
                 id: 'housings',
                 title: 'Кожуха',
@@ -3888,6 +4011,14 @@
                         ok: null,
                         hint: 'Посмотреть по электронному паспорту<br><span class="legend">Формирование КМБ на НЭВЗ - НЭВЗ<br>Формирование КМБ на ТР-250 или при замене ТЭД - СЛД</span>',
                         photo: false
+                    },
+                    {
+                        key: 'zav',
+                        label: 'Заводской № (только для НЭВЗ, при отсутствии течей)',
+                        type: 'text',
+                        ok: null,
+                        hint: 'Введите заводской номер кожуха (заполняется только при формировании НЭВЗ и отсутствии течей)',
+                        photo: false
                     }
                 ],
                 instances() {
@@ -3904,9 +4035,13 @@
                     const leak = getVal(iid, 'leak');
                     const hasOil = oil && oil !== '';
                     const hasLeak = leak && leak !== '';
-                    if (!hasOil && !hasLeak) return { state: 'na', label: 'Нет' };
-                    if (oil === 'Да' && leak === 'Да') return { state: 'ok', label: 'Нет' };
-                    return { state: 'bad', label: 'Да' };
+                    if (oil === 'Нет' || oil === 'Устранено' || leak === 'Нет' || leak === 'Устранено') {
+                        return { state: 'bad', label: 'Да' };
+                    }
+                    if (hasOil && hasLeak && oil === 'Да' && leak === 'Да') {
+                        return { state: 'ok', label: 'Нет' };
+                    }
+                    return { state: 'na', label: 'Нет' };
                 },
                 customRender: false,
             });
@@ -3951,7 +4086,7 @@
         }
 
         // ========================================================================
-        // ФУНКЦИИ ДЛЯ ФОТО (полный набор из комплексного)
+        // ФУНКЦИИ ДЛЯ ФОТО (полный набор)
         // ========================================================================
         function compressImage(file, maxSize, quality, callback) {
             const reader = new FileReader();
@@ -4155,6 +4290,82 @@
         }
 
         // ========================================================================
+        // ФУНКЦИИ УВЕДОМЛЕНИЙ (аналогично комплексному)
+        // ========================================================================
+        function isNoticeNeeded(iid) {
+            const formation = getVal(iid, 'formation');
+            const leak = getVal(iid, 'leak');
+            return (formation === 'НЭВЗ' && leak === 'Нет');
+        }
+
+        function updateNoticeList() {
+            const list = document.getElementById('noticeList');
+            const emptyMsg = document.getElementById('emptyMsg');
+            const items = list.querySelectorAll('.item');
+            items.forEach(el => el.remove());
+
+            const needed = [];
+            document.querySelectorAll('.inst[data-iid]').forEach(card => {
+                const iid = card.dataset.iid;
+                const eqId = iid.split('|')[0];
+                if (eqId === 'housings' && isNoticeNeeded(iid)) {
+                    needed.push(iid);
+                }
+            });
+
+            if (needed.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            }
+            emptyMsg.style.display = 'none';
+
+            needed.forEach(iid => {
+                const card = document.querySelector(`.inst[data-iid="${CSS.escape(iid)}"]`);
+                if (!card) return;
+                const lbl = card.querySelector('.ih .lbl');
+                const title = lbl ? lbl.textContent : iid;
+                const section = iid.split('|')[1] || '';
+
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.dataset.iid = iid;
+                div.innerHTML = `
+                    <span><strong>${title}</strong> (${section})</span>
+                    <span class="highlight">⚠️ Требуется уведомление</span>
+                `;
+                div.addEventListener('click', () => {
+                    if (card) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        highlightCard(card);
+                    }
+                });
+                list.appendChild(div);
+            });
+        }
+
+        function updateNoticeCount() {
+            const cards = document.querySelectorAll('.inst[data-iid]');
+            let count = 0;
+            cards.forEach(card => {
+                const iid = card.dataset.iid;
+                const eqId = iid.split('|')[0];
+                if (eqId === 'housings' && isNoticeNeeded(iid)) {
+                    count++;
+                }
+            });
+            const badge = document.getElementById('noticeCount');
+            if (badge) badge.textContent = count;
+        }
+
+        function highlightCard(card) {
+            card.style.transition = 'box-shadow 0.3s';
+            card.style.boxShadow = '0 0 0 4px #d4a017, 0 4px 20px rgba(212,160,23,0.5)';
+            setTimeout(() => {
+                card.style.boxShadow = '';
+            }, 2500);
+        }
+
+        // ========================================================================
         // ПОСТРОЕНИЕ СТРОКИ ПОЛЯ
         // ========================================================================
         function fieldRow(eq, inst, iid, field) {
@@ -4197,8 +4408,8 @@
                         if (field.ok && field.ok.includes(val)) row.classList.add('frow-ok');
                         else if (field.ok && !field.ok.includes(val)) row.classList.add('frow-bad');
                     }
-                    // Управление видимостью formation
-                    if (eq.id === 'housings' && (field.key === 'leak' || field.key === 'oil')) {
+                    // Управление видимостью formation и zav
+                    if (eq.id === 'housings' && (field.key === 'leak' || field.key === 'oil' || field.key === 'formation')) {
                         const card = this.closest('.inst');
                         if (card) {
                             const iid2 = card.dataset.iid;
@@ -4260,6 +4471,19 @@
             head.appendChild(pill);
             card.appendChild(head);
 
+            // Бейдж уведомления
+            const badgeContainer = document.createElement('div');
+            badgeContainer.className = 'notice-badge';
+            badgeContainer.id = `badge_${iid}`;
+            badgeContainer.style.display = 'none';
+            badgeContainer.textContent = '⚠️ Требуется уведомление';
+            badgeContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                highlightCard(card);
+            });
+            card.appendChild(badgeContainer);
+
             for (const field of eq.fields) {
                 card.appendChild(fieldRow(eq, inst, iid, field));
             }
@@ -4295,6 +4519,7 @@
             if (flag.state === 'bad') card.classList.add('flag-bad');
 
             if (eq.id === 'housings') {
+                // Управление видимостью formation
                 const formRow = card.querySelector('.frow[data-field-key="formation"]');
                 if (formRow) {
                     const show = shouldShowFormation(iid);
@@ -4310,6 +4535,7 @@
                         }
                     }
                 }
+                // Подсветка oil и leak
                 ['oil', 'leak'].forEach(fieldKey => {
                     const select = card.querySelector(`select[data-field-key="${fieldKey}"]`);
                     if (select) {
@@ -4321,8 +4547,35 @@
                         }
                     }
                 });
+
+                // Управление видимостью zav
+                const zavRow = card.querySelector('.frow[data-field-key="zav"]');
+                if (zavRow) {
+                    const formation = getVal(iid, 'formation');
+                    const leak = getVal(iid, 'leak');
+                    if (formation === 'НЭВЗ' && leak === 'Нет') {
+                        zavRow.style.display = '';
+                    } else {
+                        zavRow.style.display = 'none';
+                        const zavInput = zavRow.querySelector('input[type="text"]');
+                        if (zavInput) {
+                            zavInput.value = '';
+                            setVal(iid, 'zav', '');
+                        }
+                    }
+                }
+
+                // Обновление бейджа уведомления
+                const badge = document.getElementById(`badge_${iid}`);
+                if (badge) {
+                    const needed = isNoticeNeeded(iid);
+                    badge.style.display = needed ? 'inline-block' : 'none';
+                    card.classList.toggle('notice-needed', needed);
+                }
             }
             updateStats();
+            updateNoticeList();
+            updateNoticeCount();
         }
 
         // ========================================================================
@@ -4689,7 +4942,6 @@
                 picker.appendChild(msg);
                 return;
             }
-            // Всегда выбираем единственный узел
             if (STATE.selected.length === 0 || !STATE.selected.includes('housings')) {
                 STATE.selected = ['housings'];
                 saveState(true);
@@ -4700,7 +4952,7 @@
             const chip = document.createElement('div');
             chip.className = 'chip active';
             chip.innerHTML = `<span>${eq.title}</span><span class="n">${n}</span>`;
-            chip.onclick = () => {}; // неактивен
+            chip.onclick = () => {};
             picker.appendChild(chip);
         }
 
@@ -4814,10 +5066,12 @@
                 root.appendChild(wrap);
             }
             updateStats();
+            updateNoticeList();
+            updateNoticeCount();
         }
 
         // ========================================================================
-        // СТАТИСТИКА
+        // СТАТИСТИКА (с учётом видимости formation и zav)
         // ========================================================================
         function computeStats() {
             const generalFields = ['date', 'type', 'number', 'depot', 'place', 'mileage'];
@@ -4859,6 +5113,21 @@
                         if (flag.state === 'ok') okInstances++;
                         if (flag.state === 'bad') badInstances++;
                         for (const field of eq.fields) {
+                            // Пропускаем formation, если оно скрыто
+                            if (eq.id === 'housings' && field.key === 'formation') {
+                                const leak = getVal(iid, 'leak');
+                                if (leak !== 'Нет') {
+                                    continue;
+                                }
+                            }
+                            // Пропускаем zav, если оно скрыто
+                            if (eq.id === 'housings' && field.key === 'zav') {
+                                const formation = getVal(iid, 'formation');
+                                const leak = getVal(iid, 'leak');
+                                if (formation !== 'НЭВЗ' || leak !== 'Нет') {
+                                    continue;
+                                }
+                            }
                             allFieldsCount++;
                             const val = getVal(iid, field.key);
                             if (val && val !== '' && val !== '— выбрать') {
@@ -4994,7 +5263,7 @@
                             inst.section,
                             inst.housingId || '',
                             '',
-                            ''
+                            getVal(iid, 'zav') || ''  // Заводской №
                         ];
 
                         const fields = eq.fields;
@@ -5311,6 +5580,11 @@
             setInterval(() => saveState(true), 20000);
 
             initThemeSwitch();
+
+            // Обработчик кнопки-навигатора уведомлений
+            document.getElementById('toggleNavBtn').addEventListener('click', function() {
+                document.getElementById('noticeList').classList.toggle('show');
+            });
         }
 
         init();
